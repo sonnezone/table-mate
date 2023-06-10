@@ -1,5 +1,5 @@
 import React from "react";
-import {Col, Collapse, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem} from "reactstrap";
+import {Collapse, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem} from "reactstrap";
 
 export default props => {
     const handleClickScroll = (sectionId) => {
@@ -19,7 +19,7 @@ export default props => {
         >
             Table Mate
         </NavbarBrand>
-        <NavbarToggler onCLick={_ => {}}/>
+        <NavbarToggler onClick={_ => {}}/>
         <Collapse isOpen={false} navbar>
             <Nav className="ml-auto" navbar>
                 <NavItem

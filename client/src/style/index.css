@@ -159,12 +159,12 @@ input[type=date]::-webkit-calendar-picker-indicator {
   border: none;
   border-radius: 20px;
   text-align: center;
-  box-shadow: #292824 0px 0px 10px 0px;
+  box-shadow: #292824 0 0 10px 0;
 }
 .booking-dropdown:hover {
   background-color: #343a37;
   color: white;
-  box-shadow: #292824 0px 0px 20px 0px;
+  box-shadow: #292824 0 0 20px 0;
 }
 .booking-dropdown:focus {
   outline: none;
@@ -457,6 +457,23 @@ input[type=date]::-webkit-calendar-picker-indicator {
   width: 300px;
   border-top: 5px solid #0e3750;
   border-radius: 0;
+}
+
+.weather-hour {
+  border-radius: 25px;
+  margin-bottom: 25px;
+  width: 150px;
+  height: 80px;
+  padding-left: 20px;
+  background: linear-gradient(45deg, #347ae5, #adb7c4);
+  box-shadow: 10px -10px 20px #004156, -5px 5px 20px #3fd0d0;
+}
+
+#scrolly {
+  padding: 30px 30px 30px 30px;
+  width: 1200px;
+  height: 220px;
+  overflow-y: scroll;
 }
 
 /*# sourceMappingURL=index.css.map */
