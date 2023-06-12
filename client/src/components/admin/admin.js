@@ -131,7 +131,7 @@ const Admin = () => {
     return (
         <Container>
             <Row>
-                <Col xs="6">
+                <Col xs="6" style={{textAlign: 'center'}}>
                     <input
                         type="date"
                         required="required"
@@ -161,7 +161,7 @@ const Admin = () => {
                         }}
                     ></input>
                 </Col>
-                <Col xs="6">
+                <Col xs="6" style={{textAlign: 'center'}}>
                     <UncontrolledDropdown>
                         <DropdownToggle color="none" caret className="booking-dropdown">
                             {selection.time === null ? "Uhrzeit" : selection.time}
