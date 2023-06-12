@@ -12,8 +12,10 @@ import {
 
 import Table from "./table";
 import WeatherRow from "../weather/WeatherRow";
+import {useHistory} from "react-router-dom";
 
 export default props => {
+  const history = useHistory();
 
   // Weather data
   const [weatherData, setWeatherData] = useState([]);
@@ -79,7 +81,7 @@ export default props => {
     let time = selection.time.slice(0, -2);
     time = selection.time > 12 ? time + 12 + ":00" : time + ":00";
     console.log(time);
-    // const datetime = new Date(date + " " + time);
+
     return new Date(date + " " + time);
   };
 
@@ -91,8 +93,10 @@ export default props => {
   useEffect(() => {
     // Check availability of tables from DB when a date and time is selected
     if (selection.time && selection.date) {
+      console.log("test!Works");
       (async _ => {
         let datetime = getDate();
+        console.log(datetime)
         let res = await fetch("http://localhost:3005/availability", {
           method: "POST",
           headers: {
@@ -103,7 +107,7 @@ export default props => {
           })
         });
         res = await res.json();
-        // Filter available tables with location and group size criteria
+
         let tables = res.tables.filter(
           table =>
             (selection.size > 0 ? table.capacity >= selection.size : true) &&
@@ -114,12 +118,12 @@ export default props => {
         setTotalTables(tables);
       })();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selection.time, selection.date, selection.size, selection.location]);
 
   // Make the reservation if all details are filled out
   const reserve = async _ => {
     if (
+        //TODO regex
       (booking.name.length === 0) |
       (booking.phone.length === 0) |
       (booking.email.length === 0)
@@ -141,7 +145,7 @@ export default props => {
       });
       res = await res.text();
       console.log("Reserved: " + res);
-      props.setPage(2);
+      history.push('thankyou')
     }
   };
 
@@ -268,9 +272,9 @@ export default props => {
     }
   };
 
+  //Weather
   const fetchWeatherData = async (date) => {
-    // try {
-
+    try {
       // const apiKey = process.env.WEATHER_API_KEY;
       const apiKey = "e3be9c01ebcecace0a537390f022a6b4";
       const lat = 50.1109;
@@ -310,9 +314,9 @@ export default props => {
         } else {
           console.error('Hourly data not available');
         }
-    // } catch (error) {
-    //   console.error('Error fetching weather data: ', error)
-    // }
+    } catch (error) {
+      console.error('Error fetching weather data: ', error)
+    }
   }
 
   useEffect(() => {

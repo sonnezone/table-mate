@@ -3,6 +3,7 @@ import { Row, Col, Button } from "reactstrap";
 import Faq from 'react-faq-component';
 import Contact from "./contact";
 import {Footer} from "../footer/footer";
+import {useHistory} from 'react-router-dom'
 
 const data = {
     title: "FAQ",
@@ -36,10 +37,6 @@ const styles = {
     titleTextSize: '50px',
     rowContentPaddingTop: '10px',
     rowContentPaddingBottom: '10px',
-    // titleTextColor: "black",
-    // rowTitleColor: "blue",
-    // rowContentColor: 'grey',
-    // arrowColor: "red",
 };
 
 const config = {
@@ -49,6 +46,8 @@ const config = {
 };
 
 export default props => {
+    const history = useHistory();
+
   return (
   <div>
       <Row noGutters className="text-center align-items-center">
@@ -74,23 +73,29 @@ export default props => {
                 <p className="demoParagraph">Steigern Sie Effizienz und Kundenzufriedenheit mit unserem innovativen Restaurant-Reservierungstool - klicken Sie auf "Demo", um es in Aktion zu sehen!</p>
             </div>
         </Col>
-        <Col xs="12">
+        <Col xs="6">
           <Button
               color="none"
               className="book-table-btn"
               onClick={_ => {
-                  props.setPage(1);
+                  history.push("/book")
               }}
           >
-              DEMO
+            DEMO
+          </Button>
+        </Col>
+        <Col xs="6">
+          <Button
+              color="none"
+              className="book-table-btn"
+              onClick={_ => {
+                  history.push("/admin")
+              }}
+          >
+            ADMIN
           </Button>
         </Col>
       </Row>
-      {/*<Row>*/}
-      {/*      <Col xs="12" className="text-center">*/}
-      {/*          <h1 className="main-text">Unsere Features</h1>*/}
-      {/*      </Col>*/}
-      {/*</Row>*/}
         <Row id="faq" className="faq">
             <Col xs="12">
                 <Faq
