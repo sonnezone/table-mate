@@ -177,12 +177,12 @@ const Admin = () => {
                     <table border="1">
                         <thead>
                         <tr>
-                            <th>Table Name</th>
-                            <th>Capacity</th>
-                            <th>Location</th>
-                            <th>Reservation Name</th>
-                            <th>Reservation Phone</th>
-                            <th>Reservation Email</th>
+                            <th>Tisch Nummer</th>
+                            <th>Kapazität</th>
+                            <th>Ort</th>
+                            <th>Name</th>
+                            <th>Telefonnummer</th>
+                            <th>E-Mail</th>
                         </tr>
                         </thead>
                         <tbody>
