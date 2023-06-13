@@ -116,6 +116,7 @@ h3
     color: white
     padding-bottom: 30px
 
+
 .demoParagraph
     text-align: center
     color: white
@@ -147,11 +148,11 @@ input[type=date]::-webkit-calendar-picker-indicator
     border: none
     border-radius: 20px
     text-align: center
-    box-shadow: #292824 0px 0px 10px 0px
+    box-shadow: #292824 0 0 10px 0
     &:hover
         background-color: #343a37
         color: white
-        box-shadow: #292824 0px 0px 20px 0px
+        box-shadow: #292824 0 0 20px 0
     &:focus
         outline: none
         box-shadow: none
@@ -420,4 +421,56 @@ input[type=date]::-webkit-calendar-picker-indicator
 //    50%
 //transform: translate(0, 8px)
 //    100%
+
+//Weather
+.weather-hour
+    border-radius: 25px
+    margin-bottom: 25px
+    width: 150px
+    height: 80px
+    padding-left: 20px
+    background: linear-gradient(45deg, #347ae5, #adb7c4)
+    box-shadow:  10px -10px 20px #004156, -5px 5px 20px #3fd0d0
+
+
+#scrolly
+    padding: 30px 30px 30px 30px
+    width: 1200px
+    height: 220px
+    overflow-y: scroll
+
+
+//Table
+
+table
+    //border-collapse: collapse
+    //border-spacing: 0
+    border: 1px solid
+    width: 100%
+    margin: 20px 0
+
+th, td
+    border-radius: 0
+
+th
+    background-color: #292824
+    color: white
+    font-weight: bold
+    padding: 10px 15px
+    text-align: left
+
+td
+    padding: 10px 15px
+    text-align: left
+
+tr:hover td
+    background-color: #adaaa0
+
+//tr > :first-child
+//    border-top-left-radius: 12px
+//    border-bottom-left-radius: 12px
+//
+//tr > :last-child
+//    border-top-right-radius: 12px
+//    border-bottom-left-radius: 12px
 

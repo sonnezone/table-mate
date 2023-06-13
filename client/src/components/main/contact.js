@@ -7,6 +7,7 @@ const Contact = () => {
                 <div className="pageTitle title">Kontaktformular</div>
                 <div className="secondaryTitle title">
                     Please fill this form to sign up.
+                    Bitte füllen Sie di
                 </div>
                 <input type="text" className="name formEntry" placeholder="Name (Pflichtfeld)" />
                 <input type="text" className="email formEntry" placeholder="E-Mail-Adresse (Pflichtfeld)" />

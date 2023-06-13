@@ -11,9 +11,15 @@ import {
 } from "reactstrap";
 
 import Table from "./table";
-
+import WeatherRow from "../weather/WeatherRow";
+import {useHistory} from "react-router-dom";
 
 export default props => {
+  const history = useHistory();
+
+  // Weather data
+  const [weatherData, setWeatherData] = useState([]);
+
   const [totalTables, setTotalTables] = useState([]);
 
   // User's selections
@@ -75,8 +81,8 @@ export default props => {
     let time = selection.time.slice(0, -2);
     time = selection.time > 12 ? time + 12 + ":00" : time + ":00";
     console.log(time);
-    const datetime = new Date(date + " " + time);
-    return datetime;
+
+    return new Date(date + " " + time);
   };
 
   const getEmptyTables = _ => {
@@ -87,8 +93,10 @@ export default props => {
   useEffect(() => {
     // Check availability of tables from DB when a date and time is selected
     if (selection.time && selection.date) {
+      console.log("test!Works");
       (async _ => {
         let datetime = getDate();
+        console.log(datetime)
         let res = await fetch("http://localhost:3005/availability", {
           method: "POST",
           headers: {
@@ -99,7 +107,7 @@ export default props => {
           })
         });
         res = await res.json();
-        // Filter available tables with location and group size criteria
+
         let tables = res.tables.filter(
           table =>
             (selection.size > 0 ? table.capacity >= selection.size : true) &&
@@ -110,12 +118,12 @@ export default props => {
         setTotalTables(tables);
       })();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selection.time, selection.date, selection.size, selection.location]);
 
   // Make the reservation if all details are filled out
   const reserve = async _ => {
     if (
+        //TODO regex
       (booking.name.length === 0) |
       (booking.phone.length === 0) |
       (booking.email.length === 0)
@@ -137,7 +145,7 @@ export default props => {
       });
       res = await res.text();
       console.log("Reserved: " + res);
-      props.setPage(2);
+      history.push('thankyou')
     }
   };
 
@@ -264,9 +272,63 @@ export default props => {
     }
   };
 
+  //Weather
+  const fetchWeatherData = async (date) => {
+    try {
+      // const apiKey = process.env.WEATHER_API_KEY;
+      const apiKey = "e3be9c01ebcecace0a537390f022a6b4";
+      const lat = 50.1109;
+      const lon = 8.6821;
+
+      const response = await fetch(
+          `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&appid=${apiKey}`
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+        if (data.hourly){
+          const hourlyWeather = data.hourly.map((hour) => {
+            const dateObject = new Date(hour.dt * 1000);
+            const day = String(dateObject.getDate()).padStart(2, '0');
+            const month = String(dateObject.getMonth() + 1).padStart(2, '0');
+            const time = new Date(hour.dt * 1000).toLocaleTimeString('en-US', {hour: '2-digit'});
+            const temp = (hour.temp - 273.15).toFixed(2);
+            const icon = hour.weather[0].icon
+
+            const formattedDate = `${day}-${month}`;
+
+            return {
+              date: formattedDate,
+              time: time,
+              temp: temp,
+              icon: icon
+            }
+
+
+          });
+          setWeatherData(hourlyWeather);
+
+        } else {
+          console.error('Hourly data not available');
+        }
+    } catch (error) {
+      console.error('Error fetching weather data: ', error)
+    }
+  }
+
+  useEffect(() => {
+    if (selection.date) {
+      const unixTimestamp = Math.floor(selection.date.getTime() / 1000);
+      fetchWeatherData(unixTimestamp);
+    }
+  }, [selection.date]);
+
   return (
     <div>
-      <Row noGutters className="text-center align-items-center main-cta main-text">
+      <Row noGutters className="text-center align-items-center main-cta">
         <Col>
           <h1 className="main-cta">
             {!selection.table.id ? "Reservierung mit paar Klicks – Buchen Sie Ihren Tisch jetzt!" : "Buchung bestätigen – Ihre Reservierung ist fast fertig!"}
@@ -278,7 +340,7 @@ export default props => {
           </h3>
 
           {reservationError ? (
-            <h3> className="reservation-error">
+            <h3 className="reservation-error">
               * Bitte füllen Sie alle Pflichtfelder aus.
             </h3>
           ) : null}
@@ -350,6 +412,9 @@ export default props => {
                 </DropdownMenu>
               </UncontrolledDropdown>
             </Col>
+          </Row>
+          <Row>
+              {weatherData.length > 0 && <WeatherRow weatherData={weatherData} />}
           </Row>
           <Row noGutters className="tables-display">
             <Col>
