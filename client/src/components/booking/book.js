@@ -123,7 +123,6 @@ export default props => {
   // Make the reservation if all details are filled out
   const reserve = async _ => {
     if (
-        //TODO regex
       (booking.name.length === 0) |
       (booking.phone.length === 0) |
       (booking.email.length === 0)
@@ -131,21 +130,27 @@ export default props => {
       console.log("Incomplete Details");
       setReservationError(true);
     } else {
-      const datetime = getDate();
-      let res = await fetch("http://localhost:3005/reserve", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          ...booking,
-          date: datetime,
-          table: selection.table.id
-        })
-      });
-      res = await res.text();
-      console.log("Reserved: " + res);
-      history.push('thankyou')
+      if (validateInput(booking)) {
+        const datetime = getDate();
+        let res = await fetch("http://localhost:3005/reserve", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            ...booking,
+            date: datetime,
+            table: selection.table.id
+          })
+        });
+        res = await res.text();
+        console.log("Reserved: " + res);
+        history.push('thankyou')
+      } else {
+        console.log("error")
+        setReservationError(true);
+      }
+
     }
   };
 
@@ -272,7 +277,7 @@ export default props => {
     }
   };
 
-  //Weather
+  //Weatherw
   const fetchWeatherData = async (date) => {
     try {
       // const apiKey = process.env.WEATHER_API_KEY;
@@ -326,6 +331,20 @@ export default props => {
     }
   }, [selection.date]);
 
+
+  // Validation
+  const validateInput = (input) => {
+    const namePattern = /^[a-zA-ZäöüÄÖÜß\s]{2,30}$/;
+    const phonePattern = /^(\+?\d{1,3})?[\s.-]?\d{1,14}$/;
+    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+    const isValidName = namePattern.test(input.name);
+    const isValidPhone = phonePattern.test(input.phone);
+    const isValidEmail = emailPattern.test(input.email);
+
+    return isValidName && isValidPhone && isValidEmail;
+  };
+
   return (
     <div>
       <Row noGutters className="text-center align-items-center main-cta">
@@ -341,7 +360,7 @@ export default props => {
 
           {reservationError ? (
             <h3 className="reservation-error">
-              * Bitte füllen Sie alle Pflichtfelder aus.
+              * Bitte geben Sie gültige Informationen ein.
             </h3>
           ) : null}
         </Col>
